@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@myapp/client-lib": ["packages/client-lib/src/index.ts"],
       "@myapp/server-lib": ["packages/server-lib/src/index.ts"]
     }
   },
