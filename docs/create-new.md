@@ -14,3 +14,14 @@ nx generate @nrwl/js:library --name=server-lib  --buildable --preset=ts
 ```
 nx generate @nrwl/js:library --name=client-lib  --publishable --importPath="@myapp/client-lib" --preset=ts
 ```
+
+## Angular App
+```
+nx generate @nrwl/angular:application myAngularApp
+nx generate @nrwl/angular:application myAwesomeApp
+```
+
+## Angular App Component
+```
+nx generate @nrwl/angular:component --project=my-angular-app awesomeComponent --dry-run
+```

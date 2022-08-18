@@ -3,6 +3,10 @@
   "version": 2,
   "projects": {
     "client-lib": "packages/client-lib",
+    "my-angular-app": "apps/my-angular-app",
+    "my-angular-app-e2e": "apps/my-angular-app-e2e",
+    "my-awesome-app": "apps/my-awesome-app",
+    "my-awesome-app-e2e": "apps/my-awesome-app-e2e",
     "server-lib": "packages/server-lib"
   }
 }
