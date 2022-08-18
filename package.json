@@ -4,11 +4,13 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "ngcc --properties es2020 browser module main",
-    "_run:test:coverage:clean": "rm -rf ./coverage",
-    "_run:test:coverage:exec": "nx run-many --target=test --codeCoverage --coverageReporters=lcov --parallel --skip-nx-cache",
-    "_run:test:coverage:merge": "node ./tools/scripts/coverageMerge.js",
+    "_run:test:coverage:clean": "mkdir -p ./coverage && rm -rf ./coverage/*",
+    "_run:test:coverage:exec": "nx run-many --target=test --codeCoverage --coverageReporters=lcovonly,text,text-summary --parallel --skip-nx-cache",
+    "_run:test:coverage:merge": "ts-node ./tools/scripts/coverageMerge.ts",
     "_run:test:coverage:generate": "genhtml ./coverage/lcov.info -o coverage",
-    "test:coverage": "run-s _run:test:coverage:clean _run:test:coverage:exec _run:test:coverage:merge _run:test:coverage:generate"
+    "_run:test:coverage:echo": "echo Open Coverage Report in Browser: file://$(pwd)/coverage/index.html ",
+    "test:coverage": "run-s _run:test:coverage:clean _run:test:coverage:exec _run:test:coverage:merge _run:test:coverage:generate _run:test:coverage:echo",
+    "script:startNgrok": "ts-node ./tools/scripts/startNgrok.ts"
   },
   "private": true,
   "dependencies": {
@@ -22,6 +24,7 @@
     "@angular/router": "~14.1.1",
     "npm-run-all": "^4.1.5",
     "rxjs": "~7.4.0",
+    "ts-node": "10.9.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
@@ -52,10 +55,10 @@
     "eslint-plugin-cypress": "^2.10.3",
     "jest": "27.5.1",
     "jest-preset-angular": "~11.1.2",
+    "ngrok": "^4.3.3",
     "nx": "^14.5.6",
     "prettier": "^2.6.2",
     "ts-jest": "27.1.4",
-    "ts-node": "10.9.1",
     "typescript": "~4.7.2"
   }
 }

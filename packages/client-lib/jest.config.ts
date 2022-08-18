@@ -10,6 +10,10 @@ export default {
   transform: {
     '^.+\\.[tj]s$': 'ts-jest',
   },
+  collectCoverageFrom: [
+    "src/**/*.{js,jsx,ts,tsx}",
+    "!**/node_modules/"
+  ],
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/packages/client-lib',
 };

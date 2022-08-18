@@ -9,6 +9,10 @@ export default {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
+  collectCoverageFrom: [
+    "src/**/*.{js,jsx,ts,tsx}",
+    "!**/node_modules/"
+  ],
   coverageDirectory: '../../coverage/apps/my-angular-app',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',

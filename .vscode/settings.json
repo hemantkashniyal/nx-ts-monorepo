@@ -3,6 +3,7 @@
         "buildable",
         "genhtml",
         "lcov",
+        "lcovonly",
         "myapp",
         "nrwl"
     ]
