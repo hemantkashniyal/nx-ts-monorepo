@@ -25,3 +25,16 @@ nx generate @nrwl/angular:application myAwesomeApp
 ```
 nx generate @nrwl/angular:component --project=my-angular-app awesomeComponent --dry-run
 ```
+
+## Setup unit test coverage
+Include below mentioned config in `<app,lib>/jest.config.ts`
+```js
+{
+  ...
+  collectCoverageFrom: [
+    "src/**/*.{js,jsx,ts,tsx}",
+    "!**/node_modules/"
+  ],
+  ...
+}
+```
