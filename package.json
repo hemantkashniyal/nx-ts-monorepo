@@ -12,6 +12,7 @@
     "init:osx": "./tools/scripts/install.osx.sh",
     "init:linux": "./tools/scripts/install.linux.sh",
     "init:windows": "./tools/scripts/install.windows.ps1",
+    "docs:gen:images": "cd docs/diagrams && python diagram.py",
     "_run:test:coverage:clean": "mkdir -p ./coverage && rm -rf ./coverage/*",
     "_run:test:coverage:exec": "nx run-many --target=test --codeCoverage --coverageReporters=lcovonly,text,text-summary --parallel --skip-nx-cache",
     "_run:test:coverage:merge": "ts-node ./tools/scripts/coverageMerge.ts",
