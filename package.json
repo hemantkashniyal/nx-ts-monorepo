@@ -22,7 +22,17 @@
     "start:local": "run-s build firebase:emulate",
     "firebase:emulate": "cross-env USE_FIREBASE_EMULATOR=true firebase emulators:start --project demo-firebase-project -c ./firebase.json --inspect-functions",
     "firebase:emulate:stop": "lsof -t -i:5001 -i:5002 -i:5002 -i:5003 -i:5004 -i:5005 -i:5006 -i:5007 -i:5008 -i:9595 -i:9229 -i:4400 -i:4500 | xargs kill -9",
-    "script:startNgrok": "ts-node ./tools/scripts/startNgrok.ts"
+    "script:startNgrok": "ts-node ./tools/scripts/startNgrok.ts",
+    "terraform": "terraform -help",
+    "terraform:init": "terraform -chdir=./deployment/tf init",
+    "terraform:fmt": "terraform -chdir=./deployment/tf fmt",
+    "terraform:validate": "terraform -chdir=./deployment/tf validate",
+    "terraform:check": "run-s terraform:init terraform:validate terraform:fmt",
+    "terraform:graph": "terraform -chdir=./deployment/tf graph -draw-cycles -type=plan | dot -Tsvg > ./deployment/tf/graph.svg",
+    "terraform:plan": "cross-env-shell terraform -chdir=./deployment/tf plan -var-file='./env/$APP_DEPLOYMENT_ENV.tfvars'",
+    "terraform:plan:dev": "cross-env-shell APP_DEPLOYMENT_ENV=dev run-s terraform:plan",
+    "terraform:apply": "cross-env-shell terraform -chdir=./deployment/tf plan -var-file='./env/$APP_DEPLOYMENT_ENV.tfvars'",
+    "terraform:apply:dev": "cross-env-shell APP_DEPLOYMENT_ENV=dev run-s terraform:apply"
   },
   "private": true,
   "dependencies": {
