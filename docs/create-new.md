@@ -26,6 +26,11 @@ nx generate @nrwl/angular:application myAwesomeApp
 nx generate @nrwl/angular:component --project=my-angular-app awesomeComponent --dry-run
 ```
 
+## Node based Application
+```
+nx generate @nrwl/node:app firebase-functions --preset=ts
+```
+
 ## Setup unit test coverage
 Include below mentioned config in `<app,lib>/jest.config.ts`
 ```js

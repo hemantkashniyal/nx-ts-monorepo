@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "client-lib": "packages/client-lib",
+    "firebase-functions": "apps/firebase-functions",
     "my-angular-app": "apps/my-angular-app",
     "my-angular-app-e2e": "apps/my-angular-app-e2e",
     "my-awesome-app": "apps/my-awesome-app",
