@@ -4,6 +4,7 @@
   "projects": {
     "client-lib": "packages/client-lib",
     "firebase-functions": "apps/firebase-functions",
+    "load-test": "apps/load-test",
     "my-angular-app": "apps/my-angular-app",
     "my-angular-app-e2e": "apps/my-angular-app-e2e",
     "my-awesome-app": "apps/my-awesome-app",

@@ -1,0 +1,94 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/load-test/src",
+  "projectType": "application",
+  "targets": {
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "rm -rf ../../load-test-summary",
+          "rm -rf ../../dist/apps/load-test"
+        ],
+        "cwd": "apps/load-test",
+        "parallel": true
+      }
+    },
+    "build:postman": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "postman-to-k6 ./postman/collection.sample.json -e ./postman/env.json -g ./postman/globals.json -o ./src/postman/api.postman.test.js"
+        ],
+        "cwd": "apps/load-test",
+        "parallel": true
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "webpack build --config ./webpack.config.js"
+        ],
+        "cwd": "apps/load-test",
+        "parallel": false
+      },
+      "dependsOn": ["build:postman"]
+    },
+    "test:docker:init": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "mkdir -p ../../load-test-summary/{html,json,junit}",
+          "docker-compose up -d influxdb grafana"
+        ],
+        "cwd": "apps/load-test",
+        "parallel": false
+      }
+    },
+    "test:docker:teardown": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "docker-compose down"
+        ],
+        "cwd": "apps/load-test",
+        "parallel": false
+      }
+    },
+    "test:docker:run": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "docker-compose run --rm k6 run",
+            "forwardAllArgs": true
+          },
+          {
+            "command": "echo 'View Result:'",
+            "forwardAllArgs": false
+          },
+          {
+            "command": "echo '    Grafana Dashboard: http://localhost:3000/d/k6/k6-load-testing-results '",
+            "forwardAllArgs": false
+          },
+          {
+            "command": "echo \"    Result (open in browser): file://$(pwd)/summary/html/ \"",
+            "forwardAllArgs": false
+          }
+        ],
+        "cwd": "apps/load-test",
+        "parallel": false
+      },
+      "dependsOn": ["test:docker:init"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/load-test/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
