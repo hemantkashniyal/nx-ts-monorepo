@@ -27,8 +27,10 @@ nx generate @nrwl/angular:component --project=my-angular-app awesomeComponent --
 ```
 
 ## Node based Application
+https://medium.com/mean-fire/nx-nrwl-firebase-functions-98f96f514055
 ```
 nx generate @nrwl/node:app firebase-functions --preset=ts
+
 ```
 
 ## Setup unit test coverage
