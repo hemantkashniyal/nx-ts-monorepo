@@ -1,94 +1,125 @@
-
-
-# NxMonorepo
-
-This project was generated using [Nx](https://nx.dev).
+# MyApp
 
 <p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
 
-🔎 **Smart, Fast and Extensible Build System**
+This project was generated using [Nx](https://nx.dev), see more details [here](./README.Nx.md).
 
-## Adding capabilities to your workspace
+---
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+## Create Apps/Packages within monorepo workspace
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+Mentioned below are the commands to create basic constructs as packages, angular apps, node apps etc. For more details please visit [Nx Docs](https://nx.dev/getting-started/).
 
-Below are our core plugins:
+`--dry-run` options shows the changes being applied on the filesystem, remove it and run command to apply the actual changes.
 
-- [React](https://reactjs.org)
-  - `yarn add -D @nrwl/react`
-- Web (no framework frontends)
-  - `yarn add -D @nrwl/web`
-- [Angular](https://angular.io)
-  - `yarn add -D @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `yarn add -D @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `yarn add -D @nrwl/express`
-- [Node](https://nodejs.org)
-  - `yarn add -D @nrwl/node`
+---
 
-There are also many [community plugins](https://nx.dev/community) you could add.
+### Create a new Angular App
 
-## Generate an application
+```
+nx generate @nrwl/angular:application <angularAppName> --dry-run
+```
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
+### Add a new component to existing Angular App
 
-> You can use any of the plugins above to generate applications as well.
+```
+nx generate @nrwl/angular:component --project=<angular-app-name> <newComponentName> --dry-run
+```
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+---
 
-## Generate a library
+### Add a new Node based App
 
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
+```
+nx generate @nrwl/node:app firebase-functions --preset=ts --dry-run
+nx generate @nrwl/node:app load-test --preset=ts --dry-run
+```
 
-> You can also use any of the plugins above to generate libraries as well.
+---
 
-Libraries are shareable across libraries and applications. They can be imported from `@myapp/mylib`.
+## TS Buildable Package
 
-## Development server
+```
+nx generate @nrwl/js:library --name=common-models  --buildable --preset=ts --dry-run
+nx generate @nrwl/js:library --name=server-lib  --buildable --preset=ts --dry-run
+```
 
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+Add following lines additionally in [./tsconfig.base.json]() to facilitate deep nested imports within the app
 
-## Code scaffolding
+```js
+{
+  ...
+  "paths": {
+    "@myapp/common-models/*": ["packages/common-models/src/*"]
+    "@myapp/server-lib/*": ["packages/server-lib/src/*"]
+  },
+  ...
+}
+```
 
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
+---
 
-## Build
+## TS Publishable Package (if want to publish as npm artifact)
 
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```
+nx generate @nrwl/js:library --name=client-lib  --publishable --importPath="@myapp/client-lib" --preset=ts --dry-run
+```
 
-## Running unit tests
+Add following lines additionally in [./tsconfig.base.json]() to facilitate deep nested imports within the app
 
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
+```js
+{
+  ...
+  "paths": {
+    "@myapp/client-lib/*": ["packages/client-lib/src/*"]
+  },
+  ...
+}
+```
 
-Run `nx affected:test` to execute the unit tests affected by a change.
+---
 
-## Running end-to-end tests
+### Setup unit test coverage
 
-Run `nx e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
+Include below mentioned config in `<app,lib>/jest.config.ts`
 
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
+```js
+{
+  ...
+  collectCoverageFrom: [
+    "src/**/*.{js,jsx,ts,tsx}",
+    "!**/node_modules/"
+  ],
+  ...
+}
+```
 
-## Understand your workspace
+---
 
-Run `nx graph` to see a diagram of the dependencies of your projects.
+## Steps to run system locally
 
-## Further help
+- install nvm and enable configured nde version
 
-Visit the [Nx Documentation](https://nx.dev) to learn more.
+  ```
+  nvm use
+  ```
 
+- install application dependencies
 
+  ```
+  yarn
+  ```
 
-## ☁ Nx Cloud
+- build applications
 
-### Distributed Computation Caching & Distributed Task Execution
+  ```
+  nx run-many --target=build
+  ```
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
+- start firebase emulator
 
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
+  ```
+  yarn firebase:emulate
+  ```
 
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+- visit http://localhost:9595 for Firebase Emulator UI

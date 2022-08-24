@@ -16,7 +16,11 @@
     "baseUrl": ".",
     "paths": {
       "@myapp/client-lib": ["packages/client-lib/src/index.ts"],
-      "@myapp/server-lib": ["packages/server-lib/src/index.ts"]
+      "@myapp/client-lib/*": ["packages/client-lib/src/*"],
+      "@myapp/common-models": ["packages/common-models/src/index.ts"],
+      "@myapp/common-models/*": ["packages/common-models/src/*"],
+      "@myapp/server-lib": ["packages/server-lib/src/index.ts"],
+      "@myapp/server-lib/*": ["packages/server-lib/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,4 +1,4 @@
-module "hoppr_deployment" {
+module "myapp_deployment" {
   source = "./modules/firebase"
 
   project_id     = var.project_id
