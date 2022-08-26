@@ -67,6 +67,10 @@
       "options": {
         "commands": [
           {
+            "command": "echo '    Grafana Dashboard: http://localhost:3000/d/k6/k6-load-testing-results '",
+            "forwardAllArgs": false
+          },
+          {
             "command": "docker-compose run --rm k6 run",
             "forwardAllArgs": true
           },
@@ -86,7 +90,7 @@
         "cwd": "apps/load-test",
         "parallel": false
       },
-      "dependsOn": ["test:docker:init"]
+      "dependsOn": ["test:docker:init", "build"]
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

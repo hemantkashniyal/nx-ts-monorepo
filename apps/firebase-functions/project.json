@@ -13,6 +13,7 @@
         "parallel": false
       }
     },
+
     "build": {
       "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],
@@ -36,17 +37,7 @@
         }
       }
     },
-    "serve": {
-      "executor": "@nrwl/node:node",
-      "options": {
-        "buildTarget": "firebase-functions:build"
-      },
-      "configurations": {
-        "production": {
-          "buildTarget": "firebase-functions:build:production"
-        }
-      }
-    },
+
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
