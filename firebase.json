@@ -24,9 +24,7 @@
       "**/tmp/**",
       "**/*.log",
       "**/*.ts"
-    ],
-    "predeploy": ["yarn --cwd \"$RESOURCE_DIR\" deploy:preDeploy"],
-    "postdeploy": ["yarn --cwd \"$RESOURCE_DIR\" deploy:postDeploy"]
+    ]
   },
   "hosting": [
     {

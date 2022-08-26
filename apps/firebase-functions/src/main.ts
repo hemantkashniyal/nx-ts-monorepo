@@ -7,6 +7,7 @@ import { simulationsApp } from '@myapp/server-lib/lib/api/simulation';
 const logger = getLogger('firebase-functions');
 
 export const helloWorld = functions.https.onRequest((request, response) => {
+  console.log('@#@# APP_LOG_LEVEL:', process.env.APP_LOG_LEVEL);
   logger.emergency({
     msg: 'test log msg',
   });

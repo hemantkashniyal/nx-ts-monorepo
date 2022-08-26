@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": ".",
+  "targets": {
+    "help": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["./tools/scripts/getHelp.sh $(pwd)/project.json"],
+        "cwd": ".",
+        "parallel": false
+      }
+    },
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["rm -rf ./dist/*"],
+        "cwd": ".",
+        "parallel": false
+      }
+    },
+    "hello": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["echo hello"],
+        "cwd": ".",
+        "parallel": false
+      }
+    }
+  }
+}

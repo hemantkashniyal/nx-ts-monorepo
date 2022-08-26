@@ -3,6 +3,16 @@
   "sourceRoot": "apps/load-test/src",
   "projectType": "application",
   "targets": {
+    "help": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "$(pwd)/../../tools/scripts/getHelp.sh $(pwd)/project.json"
+        ],
+        "cwd": "apps/load-test",
+        "parallel": false
+      }
+    },
     "clean": {
       "executor": "nx:run-commands",
       "options": {

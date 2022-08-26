@@ -1,6 +1,7 @@
 {
   "projects": {
-    "default": "demo-firebase-project"
+    "default": "demo-firebase-project",
+    "dev": "myapp-temp-dev"
   },
   "targets": {}
 }

@@ -3,6 +3,16 @@
   "sourceRoot": "apps/firebase-functions/src",
   "projectType": "application",
   "targets": {
+    "help": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "$(pwd)/../../tools/scripts/getHelp.sh $(pwd)/project.json"
+        ],
+        "cwd": "apps/firebase-functions",
+        "parallel": false
+      }
+    },
     "build": {
       "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],

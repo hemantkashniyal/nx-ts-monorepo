@@ -2,6 +2,7 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "workspace": ".",
     "client-lib": "packages/client-lib",
     "common-models": "packages/common-models",
     "firebase-functions": "apps/firebase-functions",
