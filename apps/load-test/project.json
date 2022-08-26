@@ -27,9 +27,7 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          "webpack build --config ./webpack.config.js"
-        ],
+        "commands": ["webpack build --config ./webpack.config.js"],
         "cwd": "apps/load-test",
         "parallel": false
       },
@@ -49,9 +47,7 @@
     "test:docker:teardown": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          "docker-compose down"
-        ],
+        "commands": ["docker-compose down"],
         "cwd": "apps/load-test",
         "parallel": false
       }

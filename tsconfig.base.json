@@ -5,6 +5,7 @@
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
@@ -19,6 +20,8 @@
       "@myapp/client-lib/*": ["packages/client-lib/src/*"],
       "@myapp/common-models": ["packages/common-models/src/index.ts"],
       "@myapp/common-models/*": ["packages/common-models/src/*"],
+      "@myapp/logger": ["packages/logger/src/index.ts"],
+      "@myapp/logger/*": ["packages/logger/src/*"],
       "@myapp/server-lib": ["packages/server-lib/src/index.ts"],
       "@myapp/server-lib/*": ["packages/server-lib/src/*"]
     }
