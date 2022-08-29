@@ -4,10 +4,12 @@ import { authenticator } from './middlewares/authenticator';
 import { corsHandler } from './middlewares/corsHandler';
 import requestIdHandler from './middlewares/requestIdHandler';
 import { requestLogger } from './middlewares/requestLogger';
+import { requestTracer } from './middlewares/tracer';
 
 export const getExpressServer = (): Express => {
   const app = express();
   app.use(requestIdHandler());
+  app.use(requestTracer);
   app.use(express.json());
   app.use(
     express.urlencoded({

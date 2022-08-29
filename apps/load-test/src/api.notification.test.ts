@@ -45,7 +45,7 @@ export const options: Options = {
 
       // executor-specific configuration
       vus: 100,
-      iterations: 100,
+      iterations: 1000,
       maxDuration: '30s',
     },
   },
