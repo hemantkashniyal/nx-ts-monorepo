@@ -7,9 +7,6 @@ import express, {
 } from 'express';
 
 import { corsHandler } from './middlewares/corsHandler';
-import requestIdHandler from './middlewares/requestIdHandler';
-import { requestLogger } from './middlewares/requestLogger';
-import { requestTracer } from './middlewares/tracer';
 
 export const getExpressServer = (
   middlewares: ((
@@ -26,11 +23,6 @@ export const getExpressServer = (
     })
   );
   app.use(corsHandler);
-  app.use(requestIdHandler());
-  app.use(requestTracer);
-
-  app.use(requestLogger);
-
   middlewares.forEach((middleware) => app.use(middleware));
   return app;
 };
