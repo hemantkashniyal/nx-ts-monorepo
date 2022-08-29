@@ -8,7 +8,7 @@ function generateV4UUID(_request: Request) {
 
 const ATTRIBUTE_NAME = 'id';
 
-export default function requestIdHandler({
+export function requestIdHandler({
   generator = generateV4UUID,
   headerName = 'X-Request-Id',
   setHeader = true,

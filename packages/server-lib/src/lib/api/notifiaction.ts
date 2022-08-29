@@ -1,7 +1,14 @@
 import { Request, Response } from 'express';
 import { getExpressRouter, getExpressServer } from '../express';
+import { requestIdHandler } from '../middlewares/requestIdHandler';
+import { requestLogger } from '../middlewares/requestLogger';
+import { requestTracer } from '../middlewares/tracer';
 
-export const notificationsApp = getExpressServer();
+export const notificationsApp = getExpressServer([
+  requestIdHandler(),
+  requestTracer,
+  requestLogger,
+]);
 
 const router = getExpressRouter();
 

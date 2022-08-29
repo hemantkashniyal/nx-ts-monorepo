@@ -1,15 +1,24 @@
-import express, { Express, Router } from 'express';
+import express, {
+  Express,
+  NextFunction,
+  Request,
+  Response,
+  Router,
+} from 'express';
 
-import { authenticator } from './middlewares/authenticator';
 import { corsHandler } from './middlewares/corsHandler';
 import requestIdHandler from './middlewares/requestIdHandler';
 import { requestLogger } from './middlewares/requestLogger';
 import { requestTracer } from './middlewares/tracer';
 
-export const getExpressServer = (): Express => {
+export const getExpressServer = (
+  middlewares: ((
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => void)[] = []
+): Express => {
   const app = express();
-  app.use(requestIdHandler());
-  app.use(requestTracer);
   app.use(express.json());
   app.use(
     express.urlencoded({
@@ -17,16 +26,23 @@ export const getExpressServer = (): Express => {
     })
   );
   app.use(corsHandler);
+  app.use(requestIdHandler());
+  app.use(requestTracer);
+
   app.use(requestLogger);
+
+  middlewares.forEach((middleware) => app.use(middleware));
   return app;
 };
 
-export const getExpressRouter = (): Router => {
-  return Router();
-};
-
-export const getExpressAuthenticatedRouter = (): Router => {
+export const getExpressRouter = (
+  middlewares: ((
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => void)[] = []
+): Router => {
   const router = Router();
-  router.use(authenticator);
+  middlewares.forEach((middleware) => router.use(middleware));
   return router;
 };

@@ -1,7 +1,14 @@
 import { Request, Response } from 'express';
 import { getExpressRouter, getExpressServer } from '../express';
+import { requestIdHandler } from '../middlewares/requestIdHandler';
+import { requestLogger } from '../middlewares/requestLogger';
+import { requestTracer } from '../middlewares/tracer';
 
-export const simulationsApp = getExpressServer();
+export const simulationsApp = getExpressServer([
+  requestIdHandler(),
+  requestTracer,
+  requestLogger,
+]);
 
 const router = getExpressRouter();
 
