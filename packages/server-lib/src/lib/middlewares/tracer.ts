@@ -1,10 +1,11 @@
 import { getLogger } from '@myapp/logger';
 import * as opentelemetry from '@opentelemetry/api';
-import { SpanKind } from '@opentelemetry/api';
+import { SpanKind, SpanStatusCode } from '@opentelemetry/api';
 import { NextFunction, Request, Response } from 'express';
 import { initTracer } from '../tracing';
 
 const logger = getLogger('tracerMiddleware');
+const tracer = opentelemetry.trace.getTracer('reqTracer');
 
 initTracer();
 
@@ -13,23 +14,38 @@ export const requestTracer = (
   res: Response,
   next: NextFunction
 ) => {
-  const tracer = opentelemetry.trace.getTracer('reqTracer');
-
-  // Create a span.
-  const childSpan = tracer.startSpan(
-    'serverReqHandler',
-    { kind: SpanKind.SERVER },
-    opentelemetry.context.active()
+  const remoteCtx = opentelemetry.propagation.extract(
+    opentelemetry.ROOT_CONTEXT,
+    req.headers
   );
 
-  // Set attributes to the span.
-  childSpan.setAttribute('reqId', (req as any)['id'] || 'id-not-found');
+  tracer.startActiveSpan(
+    'serverReqHandler',
+    { kind: SpanKind.SERVER },
+    remoteCtx,
+    (serverReqHandlerSpan) => {
+      serverReqHandlerSpan.setAttribute(
+        'reqId',
+        (req as any)['id'] || 'id-not-found'
+      );
 
-  // Annotate our span to capture metadata about our operation
-  next();
+      res.once('finish', () => {
+        serverReqHandlerSpan.setAttribute('status', res.statusCode);
+        serverReqHandlerSpan.setStatus({ code: SpanStatusCode.OK });
+        serverReqHandlerSpan.end();
+      });
 
-  childSpan.setAttribute('status', res.statusCode);
+      res.once('error', (err: Error) => {
+        serverReqHandlerSpan.setAttribute('errorName', err.name);
+        serverReqHandlerSpan.setAttribute('errMsg', err.message);
+        serverReqHandlerSpan.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: err.message,
+        });
+        serverReqHandlerSpan.end();
+      });
 
-  // Be sure to end the span.
-  childSpan.end();
+      next();
+    }
+  );
 };

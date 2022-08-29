@@ -1816,6 +1816,13 @@
     google-auth-library "^7.0.0"
     google-proto-files "^2.1.0"
 
+"@google-cloud/opentelemetry-cloud-trace-propagator@^0.14.0":
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/opentelemetry-cloud-trace-propagator/-/opentelemetry-cloud-trace-propagator-0.14.0.tgz#63f8bf2d1fd473fbef53256cae49e1bb6e8b1995"
+  integrity sha512-gbJFXi6GcU8aXH6pBuK8zlQFyIiHUvBCqqIocvDfilJFZgh2/Ut9AAbdXWBMcLPlE7AlzGjixO9FcNtrCaDgNw==
+  dependencies:
+    hex2dec "^1.0.1"
+
 "@google-cloud/opentelemetry-resource-util@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@google-cloud/opentelemetry-resource-util/-/opentelemetry-resource-util-1.1.0.tgz#0bd1fe708ba27288f6efc9712fbd3705fd325540"
@@ -7761,6 +7768,11 @@ he@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
+
+hex2dec@^1.0.1:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/hex2dec/-/hex2dec-1.1.2.tgz#8e1ce4bef36a74f7d5723c3fb3090c2860077338"
+  integrity sha512-Yu+q/XWr2fFQ11tHxPq4p4EiNkb2y+lAacJNhAdRXVfRIcDH6gi7htWFnnlIzvqHMHoWeIsfXlNAjZInpAOJDA==
 
 hmac-drbg@^1.0.1:
   version "1.0.1"
