@@ -16,12 +16,16 @@ router.get('/', async (req: Request, res: Response) => {
   res.status(200).send({ message: 'Hey there from simulation!' });
 });
 
-router.get('/simulate', async (req: Request, res: Response) => {
+router.get('/success', async (req: Request, res: Response) => {
   res.status(200).send({ message: 'Hello there! simulation successful!' });
 });
 
 router.get('/failure', async (req: Request, res: Response) => {
   res.status(500).send({ message: 'Hello there! simulation failed!' });
+});
+
+router.get('/exception', async (req: Request, res: Response) => {
+  JSON.parse('{"malformedJson": true');
 });
 
 simulationsApp.use(router);
