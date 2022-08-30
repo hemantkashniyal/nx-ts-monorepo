@@ -14,6 +14,7 @@ export enum LogSeverity {
   INFO,
   DEBUG,
   TRACE,
+  DEFAULT = TRACE,
 }
 
 const consoleLoggers: Map<LogSeverity, (val: any) => void> = new Map([
@@ -26,6 +27,7 @@ const consoleLoggers: Map<LogSeverity, (val: any) => void> = new Map([
   [LogSeverity.ALERT, console.error], // tslint:disable-line no-console
   [LogSeverity.EMERGENCY, console.error], // tslint:disable-line no-console
   [LogSeverity.TRACE, console.log], // tslint:disable-line no-console
+  [LogSeverity.DEFAULT, console.log], // tslint:disable-line no-console
 ]);
 const resource = {
   type: 'gae_app',
@@ -43,7 +45,7 @@ class Logger {
 
   private appLog: Log | null;
 
-  private tags: any;
+  private logTags: Record<string, string> = {};
   private appLogLevel: LogSeverity;
 
   constructor(name: string) {
@@ -53,13 +55,11 @@ class Logger {
     this.appLogLevel = this.setAppLogLevel();
   }
 
-  public setTags(tags: object): Logger {
+  public setTags(tags: Record<string, string>): Logger {
     if (!Object.keys(tags).length) {
-      this.tags = {
-        // 'logComponent': this.component,
-      };
+      this.logTags = {};
     }
-    this.tags = { ...this.tags, ...tags };
+    this.logTags = { ...this.logTags, ...tags };
     return this;
   }
 
@@ -126,13 +126,22 @@ class Logger {
     return severity > this.appLogLevel;
   }
 
-  private async log(severity: LogSeverity, data: any): Promise<any> {
+  private async log(
+    severity: LogSeverity = LogSeverity.DEFAULT,
+    data: any,
+    tags?: Record<string, string>
+  ): Promise<any> {
     if (this.skipLog(severity)) {
       return;
     }
 
-    const logLevel: any = {
-      logLevel: LogSeverity[severity],
+    const logSeverity: Record<string, string> = {
+      severity: LogSeverity[severity],
+    };
+
+    const logLabels: Record<string, string> = {
+      ...this.logTags,
+      ...tags,
     };
 
     if (this.appLog) {
@@ -144,51 +153,73 @@ class Logger {
       //       trace: `projects/${process.env.GOOGLE_CLOUD_PROJECT}/traces/${traceCtx.traceId}`
       //     }
       //   }
-      const metadata: any = { resource, severity, ...traceParams };
+      const metadata: any = {
+        resource,
+        ...logSeverity,
+        ...{ labels: Object.keys(logLabels).length ? logLabels : undefined },
+        ...traceParams,
+      };
       return this.appLog.write(
-        this.appLog.entry(metadata, { ...logLevel, ...this.tags, ...data })
+        this.appLog.entry(metadata, {
+          ...data,
+        })
       );
     }
     const logFn = consoleLoggers.get(severity) || console.log; // tslint:disable-line no-console
     return Promise.resolve(
-      logFn(JSON.stringify({ ...logLevel, ...this.tags, ...data }))
+      logFn(
+        JSON.stringify({
+          ...logSeverity,
+          ...{
+            logLabels: Object.keys(logLabels).length ? logLabels : undefined,
+          },
+          ...data,
+        })
+      )
     );
   }
 
-  public async alert(data: any): Promise<any> {
-    return this.log(LogSeverity.ALERT, data);
+  public async alert(data: any, tags?: Record<string, string>): Promise<any> {
+    return this.log(LogSeverity.ALERT, data, tags);
   }
 
-  public async critical(data: any): Promise<any> {
-    return this.log(LogSeverity.CRITICAL, data);
+  public async critical(
+    data: any,
+    tags?: Record<string, string>
+  ): Promise<any> {
+    return this.log(LogSeverity.CRITICAL, data, tags);
   }
 
-  public async debug(data: any): Promise<any> {
-    return this.log(LogSeverity.DEBUG, data);
+  public async debug(data: any, tags?: Record<string, string>): Promise<any> {
+    return this.log(LogSeverity.DEBUG, data, tags);
   }
 
-  public async emergency(data: any): Promise<any> {
-    return this.log(LogSeverity.EMERGENCY, data);
+  public async emergency(
+    data: any,
+    tags?: Record<string, string>
+  ): Promise<any> {
+    return this.log(LogSeverity.EMERGENCY, data, tags);
   }
 
-  public async error(data: any): Promise<any> {
-    return this.log(LogSeverity.ERROR, data);
+  public async error(data: any, tags?: Record<string, string>): Promise<any> {
+    return this.log(LogSeverity.ERROR, data, tags);
   }
 
-  public async info(data: any): Promise<any> {
-    return this.log(LogSeverity.INFO, data);
+  public async info(data: any, tags?: Record<string, string>): Promise<any> {
+    return this.log(LogSeverity.INFO, data, tags);
   }
 
-  public async notice(data: any): Promise<any> {
-    return this.log(LogSeverity.NOTICE, data);
+  public async notice(data: any, tags?: Record<string, string>): Promise<any> {
+    return this.log(LogSeverity.NOTICE, data, tags);
   }
 
-  public async warning(data: any): Promise<any> {
-    return this.log(LogSeverity.WARNING, data);
+  public async warning(data: any, tags?: Record<string, string>): Promise<any> {
+    return this.log(LogSeverity.WARNING, data, tags);
   }
 
-  public async trace(data: any): Promise<any> {
-    return this.log(LogSeverity.TRACE, data);
+  public async trace(data: any, tags?: Record<string, string>): Promise<any> {
+    //explicitly set TRACE severity to DEFAULT
+    return this.log(LogSeverity.DEFAULT, data, tags);
   }
 }
 

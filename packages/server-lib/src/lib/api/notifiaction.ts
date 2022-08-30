@@ -21,6 +21,7 @@ router.get('/', async (req: Request, res: Response) => {
   // Create a span.
   tracer.startActiveSpan('processing', { kind: SpanKind.INTERNAL }, (span) => {
     span.setAttribute('someTestAttribute', 'test-123');
+    // do some computations here and measure attributes and tags in the created span
     span.end();
   });
   res.status(200).send({ message: 'Hey there from notification!' });
