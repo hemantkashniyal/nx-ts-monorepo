@@ -1,6 +1,5 @@
 import { TraceExporter } from '@google-cloud/opentelemetry-cloud-trace-exporter';
 import { CloudPropagator } from '@google-cloud/opentelemetry-cloud-trace-propagator';
-import { getLogger } from '@myapp/logger';
 import * as opentelemetry from '@opentelemetry/api';
 import { ZipkinExporter } from '@opentelemetry/exporter-zipkin';
 import {
@@ -13,10 +12,14 @@ import { Resource } from '@opentelemetry/resources';
 import { SimpleSpanProcessor } from '@opentelemetry/sdk-trace-base';
 import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
+import { getLogger } from './logger';
 
 const logger = getLogger('tracer');
 
 const initGoogleCloudTrace = (provider: NodeTracerProvider) => {
+  if (!cloudTracingEnabled()) {
+    return;
+  }
   const cloudTraceExporter = new TraceExporter();
   provider.addSpanProcessor(new SimpleSpanProcessor(cloudTraceExporter));
 };
@@ -28,12 +31,21 @@ const initZipkin = (provider: NodeTracerProvider) => {
   provider.addSpanProcessor(new SimpleSpanProcessor(zipkinExporter));
 };
 
+const cloudTracingEnabled = (): boolean => {
+  const value = process.env['APP_CLOUD_TRACING_ENABLE'] ?? 'true';
+  if (['true', 'false', '0', '1'].includes(value.toLowerCase())) {
+    return Boolean(JSON.parse(value.toLowerCase()));
+  }
+  return false;
+};
+
 let tracerInitialized = false;
 
 export const initTracer = () => {
   if (tracerInitialized) {
     logger.warning({
-      msg: 'tracer already initialized',
+      message: 'tracer already initialized',
+      cloudTracingEnabled: cloudTracingEnabled(),
     });
     return;
   }
@@ -66,6 +78,7 @@ export const initTracer = () => {
   opentelemetry.trace.setGlobalTracerProvider(provider);
 
   logger.info({
-    msg: 'tracer initialized',
+    message: 'tracer initialized',
+    cloudTracingEnabled: cloudTracingEnabled(),
   });
 };

@@ -1,8 +1,51 @@
 import { Log, Logging } from '@google-cloud/logging';
 
-function isAppEngine() {
+let loggerInitialized = false;
+
+let appLogResource: any | undefined = undefined;
+let logging: Logging | undefined = undefined;
+
+const getGlobalResource = (): any | undefined => {
+  return {
+    resource: 'global',
+    labels: {
+      project_id: process.env['GCLOUD_PROJECT'],
+    },
+  };
+};
+
+const cloudLoggingEnabled = (): boolean => {
+  // TODO: identify cloud logging before enabling
+  // const value = process.env['APP_CLOUD_LOGGING_ENABLE'] ?? 'false';
+  // if (['true', 'false', '0', '1'].includes(value.toLowerCase())) {
+  //   return !!JSON.parse(value.toLowerCase());
+  // }
   return false;
-}
+};
+
+export const initLogger = () => {
+  if (loggerInitialized) {
+    const _rootLogger = getLogger('root-logger');
+    _rootLogger.warning({
+      message: 'logger already initialized',
+      logResource: appLogResource,
+      cloudLoggingEnabled: cloudLoggingEnabled(),
+    });
+    return;
+  }
+  loggerInitialized = true;
+
+  appLogResource = !appLogResource ? getGlobalResource() : undefined;
+
+  logging = appLogResource && cloudLoggingEnabled() ? new Logging() : undefined;
+
+  const rootLogger = getLogger('root-logger');
+  rootLogger.info({
+    message: 'logger initialized',
+    logResource: appLogResource,
+    cloudLoggingEnabled: cloudLoggingEnabled(),
+  });
+};
 
 export enum LogSeverity {
   EMERGENCY,
@@ -29,17 +72,6 @@ const consoleLoggers: Map<LogSeverity, (val: any) => void> = new Map([
   [LogSeverity.TRACE, console.log], // tslint:disable-line no-console
   [LogSeverity.DEFAULT, console.log], // tslint:disable-line no-console
 ]);
-const resource = {
-  type: 'gae_app',
-  labels: {
-    // project_id: env.logger.projectId,
-    // version_id: env.logger.versionId,
-    // module_id: env.logger.moduleId
-  },
-};
-const logging = isAppEngine() ? new Logging() : null;
-const TRACE_KEY = 'logging.googleapis.com/trace';
-
 class Logger {
   private component: string;
 
@@ -139,7 +171,7 @@ class Logger {
       severity: LogSeverity[severity],
     };
 
-    const logLabels: Record<string, string> = {
+    const logTags: Record<string, string> = {
       ...this.logTags,
       ...tags,
     };
@@ -154,14 +186,16 @@ class Logger {
       //     }
       //   }
       const metadata: any = {
-        resource,
+        appLogResource,
         ...logSeverity,
-        ...{ labels: Object.keys(logLabels).length ? logLabels : undefined },
         ...traceParams,
       };
       return this.appLog.write(
         this.appLog.entry(metadata, {
           ...data,
+          ...{
+            logTags: Object.keys(logTags).length ? logTags : undefined,
+          },
         })
       );
     }
@@ -171,7 +205,7 @@ class Logger {
         JSON.stringify({
           ...logSeverity,
           ...{
-            logLabels: Object.keys(logLabels).length ? logLabels : undefined,
+            logTags: Object.keys(logTags).length ? logTags : undefined,
           },
           ...data,
         })

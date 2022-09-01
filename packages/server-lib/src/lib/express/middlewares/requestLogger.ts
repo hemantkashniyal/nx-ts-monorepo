@@ -14,7 +14,7 @@ export const requestLogger = (
   next: NextFunction
 ) => {
   logger.debug({
-    msg: 'req-log',
+    message: 'req-log',
     requestId: (req as any)['id'], // injected by express-request-id library
     method: req.method,
     hostname: req.hostname,
@@ -26,7 +26,7 @@ export const requestLogger = (
     // log end of the execution process
     const end = process.hrtime(start);
     const logObj = {
-      msg: 'func-resp-log',
+      message: 'func-resp-log',
       requestId: (req as any)['id'], // injected by express-request-id library
       method: req.method,
       hostname: req.hostname,
@@ -45,7 +45,7 @@ export const requestLogger = (
     // log end of the execution process
     const end = process.hrtime(start);
     const logObj = {
-      msg: 'func-error',
+      message: 'func-error',
       requestId: (req as any)['id'], // injected by express-request-id library
       method: req.method,
       hostname: req.hostname,

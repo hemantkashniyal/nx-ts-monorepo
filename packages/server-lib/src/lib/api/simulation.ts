@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { getExpressRouter, getExpressServer } from '../express';
-import { requestIdHandler } from '../middlewares/requestIdHandler';
-import { requestLogger } from '../middlewares/requestLogger';
-import { requestTracer } from '../middlewares/tracer';
+import { getExpressRouter, getExpressServer } from '../express/express';
+import { requestIdHandler } from '../express/middlewares/requestIdHandler';
+import { requestLogger } from '../express/middlewares/requestLogger';
+import { requestTracer } from '../express/middlewares/tracer';
 
 export const simulationsApp = getExpressServer([
   requestIdHandler(),

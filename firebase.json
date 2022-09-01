@@ -49,7 +49,9 @@
       "**/*.py",
       "**/*.jpg",
       "**/*.png"
-    ]
+    ],
+    "predeploy": ["cp ./apps/firebase-functions/.env* ./"],
+    "postdeploy": ["rm -f ./.env*"]
   },
   "hosting": [
     {

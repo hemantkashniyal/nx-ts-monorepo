@@ -2,10 +2,10 @@ import { getLogger } from '@myapp/logger';
 import * as opentelemetry from '@opentelemetry/api';
 import { SpanKind } from '@opentelemetry/api';
 import { Request, Response } from 'express';
-import { getExpressRouter, getExpressServer } from '../express';
-import { requestIdHandler } from '../middlewares/requestIdHandler';
-import { requestLogger } from '../middlewares/requestLogger';
-import { requestTracer } from '../middlewares/tracer';
+import { getExpressRouter, getExpressServer } from '../express/express';
+import { requestIdHandler } from '../express/middlewares/requestIdHandler';
+import { requestLogger } from '../express/middlewares/requestLogger';
+import { requestTracer } from '../express/middlewares/tracer';
 
 const logger = getLogger('notification-server');
 
@@ -31,31 +31,31 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.get('/hello', async (req: Request, res: Response) => {
   logger.emergency({
-    msg: 'test log msg',
+    message: 'test log msg',
   });
   logger.alert({
-    msg: 'test log msg',
+    message: 'test log msg',
   });
   logger.critical({
-    msg: 'test log msg',
+    message: 'test log msg',
   });
   logger.error({
-    msg: 'test log msg',
+    message: 'test log msg',
   });
   logger.warning({
-    msg: 'test log msg',
+    message: 'test log msg',
   });
   logger.notice({
-    msg: 'test log msg',
+    message: 'test log msg',
   });
   logger.info({
-    msg: 'test log msg',
+    message: 'test log msg',
   });
   logger.debug({
-    msg: 'test log msg',
+    message: 'test log msg',
   });
   logger.trace({
-    msg: 'test log msg',
+    message: 'test log msg',
   });
   res.status(200).send({ message: 'Hello, World!' });
 });

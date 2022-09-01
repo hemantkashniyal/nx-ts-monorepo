@@ -41,3 +41,6 @@ Thumbs.db
 
 .angular
 *.log
+
+/.env
+/.env.*

@@ -2,12 +2,9 @@ import { getLogger } from '@myapp/logger';
 import * as opentelemetry from '@opentelemetry/api';
 import { SpanKind, SpanStatusCode } from '@opentelemetry/api';
 import { NextFunction, Request, Response } from 'express';
-import { initTracer } from '../tracing';
 
 const logger = getLogger('tracerMiddleware');
 const tracer = opentelemetry.trace.getTracer('reqTracer');
-
-initTracer();
 
 export const requestTracer = (
   req: Request,
