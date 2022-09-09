@@ -83,7 +83,7 @@
             "forwardAllArgs": false
           },
           {
-            "command": "echo \"    Result (open in browser): file://$(pwd)/summary/html/ \"",
+            "command": "echo \"    Result (open in browser): file://$(pwd)/../../load-test-summary/html/ \"",
             "forwardAllArgs": false
           }
         ],
