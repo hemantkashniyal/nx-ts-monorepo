@@ -1,5 +1,5 @@
 module "myapp_deployment" {
-  source = "./modules/firebase"
+  source = "../../modules/firebase"
 
   project_id     = var.project_id
   project_name   = var.project_name
