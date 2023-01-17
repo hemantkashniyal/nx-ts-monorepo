@@ -42,6 +42,5 @@
     "@nrwl/angular:component": {
       "style": "css"
     }
-  },
-  "defaultProject": "my-angular-app"
+  }
 }

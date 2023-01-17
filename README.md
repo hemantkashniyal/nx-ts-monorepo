@@ -17,13 +17,21 @@ Mentioned below are the commands to create basic constructs as packages, angular
 ### Create a new Angular App
 
 ```
-nx generate @nrwl/angular:application <angularAppName> --dry-run
+nx generate @nrwl/angular:application <angularAppName> --pascalCaseFiles --dry-run
 ```
 
 ### Add a new component to existing Angular App
 
 ```
-nx generate @nrwl/angular:component --project=<angular-app-name> <newComponentName> --dry-run
+nx generate @nrwl/angular:component --project=<angular-app-name> <newComponentName> --pascalCaseFiles --dry-run
+```
+
+---
+
+### Create a new Express App
+
+```
+nx generate @nrwl/express:application <expressAppName> --pascalCaseFiles --dry-run
 ```
 
 ---
@@ -31,8 +39,8 @@ nx generate @nrwl/angular:component --project=<angular-app-name> <newComponentNa
 ### Add a new Node based App
 
 ```
-nx generate @nrwl/node:app firebase-functions --preset=ts --dry-run
-nx generate @nrwl/node:app load-test --preset=ts --dry-run
+nx generate @nrwl/node:app firebase-functions --preset=ts --pascalCaseFiles --dry-run
+nx generate @nrwl/node:app load-test --preset=ts --pascalCaseFiles --dry-run
 ```
 
 ---
@@ -40,8 +48,8 @@ nx generate @nrwl/node:app load-test --preset=ts --dry-run
 ## TS Buildable Package
 
 ```
-nx generate @nrwl/js:library --name=common-models  --buildable --preset=ts --dry-run
-nx generate @nrwl/js:library --name=server-lib  --buildable --preset=ts --dry-run
+nx generate @nrwl/js:library --name=common-models  --buildable --preset=ts --pascalCaseFiles --dry-run
+nx generate @nrwl/js:library --name=server-lib  --buildable --preset=ts --pascalCaseFiles --dry-run
 ```
 
 Add following lines additionally in [./tsconfig.base.json]() to facilitate deep nested imports within the app
@@ -62,7 +70,7 @@ Add following lines additionally in [./tsconfig.base.json]() to facilitate deep 
 ## TS Publishable Package (if want to publish as npm artifact)
 
 ```
-nx generate @nrwl/js:library --name=client-lib  --publishable --importPath="@myapp/client-lib" --preset=ts --dry-run
+nx generate @nrwl/js:library --name=client-lib  --publishable --importPath="@myapp/client-lib" --preset=ts --pascalCaseFiles --dry-run
 ```
 
 Add following lines additionally in [./tsconfig.base.json]() to facilitate deep nested imports within the app

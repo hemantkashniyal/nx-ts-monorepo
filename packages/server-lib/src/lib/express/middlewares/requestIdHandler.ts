@@ -13,7 +13,11 @@ export function requestIdHandler({
   headerName = 'X-Request-Id',
   setHeader = true,
 } = {}) {
-  return function (request: Request, response: Response, next: NextFunction) {
+  return function requestIdAssigner(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
     const oldValue = request.get(headerName);
     const id = oldValue === undefined ? generator(request) : oldValue;
 
